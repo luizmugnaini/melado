@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "melado"
+version = "0.1.0"
+description = ""
+authors = ["Luiz Mugnaini <luizmugnaini@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+numpy = ">=1.18,<1.24"
+matplotlib = "^3.7.1"
+pandas = "^2.0.0"
+scipy = "^1.10.1"
+numba = "^0.56.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
