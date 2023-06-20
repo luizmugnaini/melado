@@ -1,28 +1,53 @@
+"""Module containing the perceptron model."""
 # Author: Luiz G. Mugnaini A.
 import numpy as np
 from numpy._typing import ArrayLike, NDArray
 
 
 class Perceptron:
-    def __init__(self, random_state: (int | None) = None):
-        """Perceptron"""
-        self.weights: NDArray | None = None
+    """Perceptron model.
+
+    Parameters
+    ----------
+    random_state : int | None
+        Random state used for shuffling the datapoints for each epoch.
+    max_iter : int
+        Maximum number of iterations of the learning procedure.
+
+    Attributes
+    ----------
+    weights : ndarray
+        Model weights after the training stage.
+    """
+    def __init__(self, random_state: (int | None) = None, max_iter: int=1000):
         self.random_state = random_state
+        self.max_iter = max_iter
+        self.is_fit = False
 
     def fit(self, X: ArrayLike, y: ArrayLike):
-        X = np.asarray(X)
-        y = np.asarray(y)
+        """Fit training data to model.
 
-        # Assert the correctness of the arguments
-        assert len(X.shape) == 2
+        Parameters
+        ----------
+        X : array_like, shape = (n_datapoints, n_features)
+            Training set of datapoints.
+        y : array_like, shape = (n_datapoints,)
+            True binary labeling of hte training datapoints `X`. We assume that
+            the class labels are either `1` or `-1`.
+
+        Returns
+        -------
+        self : Perceptron
+            Model fitted to the training data.
+        """
+        X, y = np.asarray(X), np.asarray(y)
         n_datapoints, dim_features = X.shape
         assert n_datapoints == len(y)
 
-        # Preprocess `X`
-        padding = np.repeat(1.0, n_datapoints)
-        X = np.column_stack((X, padding))
+        X = np.column_stack((X, np.ones(n_datapoints)))
 
-        # Initialize weights with zero values to ensure that the model is wrong for all points in the first iteration
+        # Initialize weights with zero values to ensure that the model is wrong
+        # for all points in the first iteration.
         self.weights = np.zeros(dim_features + 1)
 
         if isinstance(self.random_state, int):
@@ -43,13 +68,25 @@ class Perceptron:
             if n_misclassifications == 0:
                 break
 
+        self.is_fit = True
+        return self
+
     def predict(self, X: ArrayLike) -> NDArray:
-        assert self.weights is not None
+        """Returns the predicted classification.
+
+        Parameters
+        ----------
+        X : array_like
+            Datapoints to be classified by the model.
+
+        Returns
+        -------
+        prediction : ndarray
+            Predicted labels for the given datapoints.
+        """
+        assert self.is_fit, "The model should be fitted before being used for predictions."
         X = np.asarray(X)
         padding = np.repeat(1.0, X.shape[0])
         X = np.column_stack((X, padding))
 
         return np.array([1 if np.dot(self.weights.T, x) >= 0 else -1 for x in X])
-
-    def _weights(self):
-        return self.weights

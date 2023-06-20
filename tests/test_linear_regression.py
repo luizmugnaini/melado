@@ -3,7 +3,7 @@ from sklearn.linear_model import LinearRegression as SklearnLinearRegression
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 import pandas as pd
-from melado.linear.regression import LinearRegression
+from melado.linear import LinearRegression
 import numpy as np
 
 data = pd.read_csv("/home/mug/Projects/melado/data/linear_regression/ww2_weather/summary_of_weather.csv", low_memory=False)
@@ -23,3 +23,7 @@ def test_linear_regression_r2_score():
     melado_lrm.fit(X_train, y_train)
     melado_prediction = melado_lrm.predict(X_test)
     np.testing.assert_almost_equal(r2_score(y_test, sklearn_prediction), r2_score(y_test, melado_prediction))
+
+# TODO:
+# - To ensure that the model is performing well with respect to the scikit-learn lib, we should do more extensive testing.
+# - Implement tests for the general linear regression, using base functions.
