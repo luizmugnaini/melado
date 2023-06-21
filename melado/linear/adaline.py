@@ -85,10 +85,11 @@ class Adaline:
         self.is_fit = True
         for _ in range(self.max_iter):
             y_hat = self.predict(X)
+            error = y - y_hat
+
             # We compute separately the gradient for the weights
             # (`self.weights[1:]`) and the bias term (`self.weights[0]`), then
             # update our coefficients via gradient descent.
-            error = y - y_hat
             gradient = (2.0 * np.dot(X.T, error) / n_datapoints, error.sum())
             self.weights[1:] += self.learning_rate * gradient[0]
             self.weights[0] += self.learning_rate * gradient[1]
