@@ -43,9 +43,7 @@ class Adaline:
         tol: (float | None) = 0.001,
         random_state: (int | None) = None,
     ):
-        assert (
-            0.0 <= learning_rate <= 1.0
-        ), f"The learning rate should be between 0.0 and 1.0, instead got {learning_rate}."
+        assert 0.0 <= learning_rate <= 1.0, f"The learning rate should be between 0.0 and 1.0, instead got {learning_rate}."
         self.learning_rate = learning_rate
         self.max_iter = max_iter
         self.tol = tol
@@ -68,9 +66,7 @@ class Adaline:
             The fitted model.
         """
         X, y = np.asarray(X), np.asarray(y)
-        assert len(X) == len(
-            y
-        ), f"Lengths of X ({len(X)}) and y ({len(y)}) don't match."
+        assert len(X) == len(y), f"Lengths of X ({len(X)}) and y ({len(y)}) don't match."
         n_datapoints, self.n_features = X.shape
         if isinstance(self.random_state, int):
             np.random.seed(self.random_state)
@@ -116,13 +112,11 @@ class Adaline:
             the point is non-negative, we classify it as `1`, otherwise the
             point is classified as `-1`.
         """
-        assert (
-            self.is_fit
-        ), "The model should be fitted to a training set before any predictions."
+        assert self.is_fit, "The model should be fitted to a training set before any predictions."
+
         X = np.asarray(X)
-        assert (
-            X.shape[1] == self.n_features
-        ), f"Expected {self.n_features} features from X but got {X.shape[0]}"
+        assert X.shape[1] == self.n_features, f"Expected {self.n_features} features from X but got {X.shape[0]}"
+
         return np.where(self._aggregate(X) >= 0.0, 1, -1)
 
     def _aggregate(self, X: NDArray) -> NDArray:

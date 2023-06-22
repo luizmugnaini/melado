@@ -21,4 +21,10 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line-length = 88
+line-length = 165
+
+[tool.ruff]
+ignore = [
+    "E501",  # line too long, handled by black
+    "C901",  # too complex
+]
