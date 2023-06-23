@@ -3,7 +3,6 @@ import pandas as pd
 from sklearn.linear_model import Perceptron as SkPerceptron
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
-from melado.linear.adaline import Adaline
 from melado.linear.perceptron import Perceptron
 
 
@@ -23,6 +22,7 @@ X = df[["sepal length in cm", "petal length in cm"]].to_numpy()
 X = X[range(len(y))]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=1)
+
 
 def test_perceptron_f1_score():
     sklearn_perceptron = SkPerceptron()
