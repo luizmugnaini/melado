@@ -10,3 +10,8 @@ data/
 
 # Sphinx documentation
 docs/_build
+
+# Publishing
+build/
+dist/
+melado.egg-info/
