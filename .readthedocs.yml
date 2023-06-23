@@ -6,7 +6,8 @@ version: 2
 
 # Optionally set the version of Python and requirements required to build your docs
 python:
-  version: 3.10
+  # readthedocs crashes with something like 3.10
+  version: 3.8
 
   install:
     - requirements: docs/requirements.txt

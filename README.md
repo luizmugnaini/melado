@@ -1,7 +1,7 @@
 # Melado 🍯
 
 <p align="center">
-    <img scr="https://raw.githubusercontent.com/luizmugnaini/melado/master/docs/_static/logo.png" alt="Melado logo" width="300px"/>
+    [<img src="https://raw.githubusercontent.com/luizmugnaini/melado/master/docs/_static/logo.png" alt="Melado logo" width="300px"/>](https://melado.readthedocs.io)
 </p>
 
 Melado is a Python library, although very immature and at its early stages,
