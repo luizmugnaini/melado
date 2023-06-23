@@ -11,7 +11,7 @@ class Adaline:
     Parameters
     ----------
     learning_rate : float
-        Learning rate is a value between 0.0 and 1.0 that informs how
+        Learning rate is a value between `0.0` and `1.0` that informs how
         significant will be the change in the weights of the model for each
         epoch with respect to the gradient descent method. Defaults to `0.01`.
     max_iter : int
@@ -25,7 +25,7 @@ class Adaline:
 
     Attributes
     ----------
-    weights : ndarray
+    weights : NDArray
         Model weights. The value `weights[0]` corresponds to the bias parameter
         of the model, while each element of `weights[1:]` corresponds to the
         weight associated to each feature.
@@ -43,7 +43,9 @@ class Adaline:
         tol: (float | None) = 0.001,
         random_state: (int | None) = None,
     ):
-        assert 0.0 <= learning_rate <= 1.0, f"The learning rate should be between 0.0 and 1.0, instead got {learning_rate}."
+        assert (
+            0.0 <= learning_rate <= 1.0
+        ), f"The learning rate should be between 0.0 and 1.0, instead got {learning_rate}."
         self.learning_rate = learning_rate
         self.max_iter = max_iter
         self.tol = tol
@@ -55,9 +57,9 @@ class Adaline:
 
         Parameters
         ----------
-        X : array_like, shape = (n_datapoints, n_features)
+        X : ArrayLike, shape = (n_datapoints, n_features)
             Datapoints used for training the model.
-        y : array_like, shape = (n_datapoints,)
+        y : ArrayLike, shape = (n_datapoints,)
             True binary labels for `X`, which we assume are either `1` or `-1`.
 
         Returns
@@ -100,13 +102,13 @@ class Adaline:
 
         Parameters
         ----------
-        X : array_like, shape = (n_datapoints, n_features)
+        X : ArrayLike, shape = (n_datapoints, n_features)
             Datapoints to be classified by the model. The number of features
             should be the same as the amount seen in the training stage.
 
         Returns
         -------
-        prediction : ndarray
+        prediction : NDArray
             The array containing the predicted classification of each datapoint
             according the following threshold: if the aggregation function for
             the point is non-negative, we classify it as `1`, otherwise the
@@ -115,7 +117,9 @@ class Adaline:
         assert self.is_fit, "The model should be fitted to a training set before any predictions."
 
         X = np.asarray(X)
-        assert X.shape[1] == self.n_features, f"Expected {self.n_features} features from X but got {X.shape[0]}"
+        assert (
+            X.shape[1] == self.n_features
+        ), f"Expected {self.n_features} features from X but got {X.shape[0]}"
 
         return np.where(self._aggregate(X) >= 0.0, 1, -1)
 

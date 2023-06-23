@@ -1,6 +1,8 @@
-# melado: A NumPy-based Machine Learning Library for Learning and Reference
+# Melado 🍯: A Machine Learning Library for Learning and Reference
 
-Melado is a Python library, although very immature and at its early stages, designed to provide a comprehensive collection of
+> 🚧 WIP: This package is very immature and at its early stages. 🚧
+
+Melado is a Python library, designed to provide a comprehensive collection of
 machine learning algorithms implemented using only the powerful numerical
 computing library, NumPy. Its primary objective is to serve as a valuable
 learning resource for understanding various machine learning algorithms without
@@ -32,7 +34,7 @@ learning frameworks.
   promotes modularity, making it easy to study and modify specific algorithms
   or integrate them into existing projects.
 
-- **Educational Examples:** Melado includes a range of illustrative examples
+- **Educational Examples:** Melado *will include* a range of illustrative examples
   and use cases that demonstrate the practical application of each algorithm.
   These examples aim to reinforce learning by showcasing how algorithms can be
   utilized in real-world scenarios.
@@ -54,6 +56,16 @@ beginner or an experienced practitioner, Melado empowers you to explore and
 expand your knowledge of machine learning algorithms.
 
 # Contents
+
+```{toctree}
+---
+maxdepth: 3
+includehidden:
+caption: Source
+---
+
+reference/modules
+```
 
 ```{toctree}
 ---

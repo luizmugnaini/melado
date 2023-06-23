@@ -16,10 +16,11 @@ class Perceptron:
 
     Attributes
     ----------
-    weights : ndarray
+    weights : NDArray
         Model weights after the training stage.
     """
-    def __init__(self, random_state: (int | None) = None, max_iter: int=1000):
+
+    def __init__(self, random_state: (int | None) = None, max_iter: int = 1000):
         self.random_state = random_state
         self.max_iter = max_iter
         self.is_fit = False
@@ -29,9 +30,9 @@ class Perceptron:
 
         Parameters
         ----------
-        X : array_like, shape = (n_datapoints, n_features)
+        X : ArrayLike, shape = (n_datapoints, n_features)
             Training set of datapoints.
-        y : array_like, shape = (n_datapoints,)
+        y : ArrayLike, shape = (n_datapoints,)
             True binary labeling of hte training datapoints `X`. We assume that
             the class labels are either `1` or `-1`.
 
@@ -76,12 +77,12 @@ class Perceptron:
 
         Parameters
         ----------
-        X : array_like
+        X : ArrayLike
             Datapoints to be classified by the model.
 
         Returns
         -------
-        prediction : ndarray
+        prediction : NDArray
             Predicted labels for the given datapoints.
         """
         assert self.is_fit, "The model should be fitted before being used for predictions."

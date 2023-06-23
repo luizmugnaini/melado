@@ -9,14 +9,27 @@
 import sys
 import os
 
-root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../melado"))
-sys.path.insert(0, root_path)
+sys.path.insert(0, os.path.abspath(".."))
+
+
+# Generate the documentation automatically from docstrings
+def run_apidoc(_):
+    from sphinx.ext.apidoc import main
+
+    parent_path = os.path.dirname(os.path.abspath(__file__))
+    module_path = [os.path.join(parent_path, "..", "melado")]
+    output_path = os.path.join(parent_path, "reference")
+    main(["-e", "-M", "-o", output_path] + module_path)
+
+
+def setup(app):
+    app.connect("builder-inited", run_apidoc)
 
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "melado"
+project = "Melado"
 copyright = "2023, Luiz G. Mugnaini A."
 author = "Luiz G. Mugnaini A."
 release = "0.1.0"
@@ -27,7 +40,10 @@ release = "0.1.0"
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.mathjax",
     "myst_parser",
+    "sphinx.ext.viewcode",
 ]
 
 templates_path = ["_templates"]
@@ -46,6 +62,7 @@ master_doc = "index"
 
 html_theme = "furo"
 html_static_path = ["_static"]
+html_logo = "_static/logo.png"
 
 
 # -- Extension configuration -------------------------------------------------
