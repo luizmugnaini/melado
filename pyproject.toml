@@ -24,6 +24,7 @@ ruff = "^0.0.275"
 setuptools = "^68.0.0"
 wheel = "^0.40.0"
 twine = "^4.0.2"
+jupyterlab = "^4.0.2"
 
 
 [build-system]
