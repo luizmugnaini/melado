@@ -1,7 +1,7 @@
 """Module containing the linear regression model."""
 # Author: Luiz G. Mugnaini A.
 import numpy as np
-from numpy._typing import NDArray, ArrayLike
+from numpy.typing import NDArray, ArrayLike
 
 
 class LinearRegression:

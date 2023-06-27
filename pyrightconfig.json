@@ -1,1 +1,9 @@
-{ "venvPath": ".", "venv": ".venv" }
+{
+    "venvPath": ".",
+    "venv": ".venv",
+    "analysis":
+    {
+        "diagnosticMode": "openFilesOnly",
+        "typeCheckingMode": "off"
+    }
+}

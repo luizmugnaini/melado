@@ -1,7 +1,7 @@
 """Module containing the adaline model."""
 # Author: Luiz G. Mugnaini A.
 import numpy as np
-from numpy._typing import ArrayLike, NDArray
+from numpy.typing import ArrayLike, NDArray
 
 
 # TODO: Write tests for the adaline model.

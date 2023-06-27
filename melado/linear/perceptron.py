@@ -1,9 +1,10 @@
 """Module containing the perceptron model."""
 # Author: Luiz G. Mugnaini A.
 import numpy as np
-from numpy._typing import ArrayLike, NDArray
+from numpy.typing import ArrayLike, NDArray
 
 
+# TODO: implement the pocket algorithm for the perceptron (can be found in "Learning from Data").
 class Perceptron:
     """Perceptron model.
 

@@ -9,7 +9,7 @@ lint:
 	poetry run ruff melado/ tests/
 
 typecheck:
-	poetry run mypy --follow-imports=skip melado/ tests/
+	poetry run mypy --ignore-missing-imports melado/ tests/
 
 docs:
 	poetry run sphinx-build docs docs/_build

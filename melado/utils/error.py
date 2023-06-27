@@ -1,6 +1,6 @@
 """Module containing different error measures."""
 import numpy as np
-from numpy._typing import NDArray
+from numpy.typing import NDArray
 
 
 class Error:
