@@ -7,6 +7,7 @@ __pycache__/
 .ruff_cache/
 __init__.pyc
 datasets/
+.pyre/
 
 # Sphinx documentation
 docs/_build

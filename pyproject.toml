@@ -24,6 +24,9 @@ setuptools = "^68.0.0"
 wheel = "^0.40.0"
 twine = "^4.0.2"
 jupyterlab = "^4.0.2"
+pyre-check = "^0.9.18"
+pywatchman = "^1.4.1"
+typeshed-client = "^2.3.0"
 
 
 [build-system]
@@ -31,7 +34,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line-length = 100
+line-length = 101
 
 [tool.ruff]
 ignore = [
