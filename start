@@ -1,0 +1,5 @@
+#! /bin/sh
+# Ensure you do have watchman (https://facebook.github.io/watchman/) and poetry installed on your machine.
+
+watchman watch-project .
+poetry install
