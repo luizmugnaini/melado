@@ -52,23 +52,26 @@ new_data, data_weights = ...
 labels = lin_reg.predict(new_data, data_weights)
 ```
 
-## Development
+<h2 id="development">
+Development
+</h2>
 
-After cloning the repository, install [Poetry](https://python-poetry.org/)
-with your favorite package manager:
+After cloning the repository, install [Poetry](https://python-poetry.org/) and
+[Watchman](https://facebook.github.io/watchman/) with your favorite package manager
 
 ```shell
-paru -Syu python-poetry
+paru -Syu python-poetry watchman
 ```
 
-Go to the `melado` directory and install the dependencies:
+Go to the `melado` directory and run the `start` script, which will install the virtual
+environment using Poetry and then set a watchman project root for `melado`:
 
 ```shell
-poetry install
+./start
 ```
 
 The available `Makefile` can be used to either run the tests, run the
-[Ruff](https://beta.ruff.rs/docs/) linter, run the [Mypy](https://mypy-lang.org/)
+[Ruff](https://beta.ruff.rs/docs/) linter, run the [Pyre](https://pyre-check.org/)
 typechecker, and build the docs with [Sphinx](https://www.sphinx-doc.org/):
 
 ```shell
@@ -79,7 +82,7 @@ make {tests,lint,typecheck,docs}
 
 We welcome contributions to Melado! If you'd like to contribute, please follow these guidelines:
 
-- Fork the repository and clone it to your local machine.
+- Fork the repository and clone it to your local machine. Read the [development](#development) section.
 - Create a new branch for your feature or bug fix.
 - Develop and test your code changes.
 - Ensure that your code adheres to the existing coding style.
