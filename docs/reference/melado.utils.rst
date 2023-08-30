@@ -13,3 +13,5 @@ Submodules
    :maxdepth: 4
 
    melado.utils.error
+   melado.utils.activation
+   melado.utils.encoding
