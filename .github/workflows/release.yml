@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,3 +26,6 @@ jobs:
       - name: Test with pytest
         run: |
           make tests
+      - name: Typecheck with pyre-check
+        run: |
+          make typecheck
