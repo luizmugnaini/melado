@@ -15,3 +15,4 @@ Submodules
    melado.linear.adaline
    melado.linear.perceptron
    melado.linear.regression
+   melado.linear.logistic
