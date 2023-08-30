@@ -1,5 +1,6 @@
 """Module containing the adaline model."""
 # Author: Luiz G. Mugnaini A.
+from typing import Optional, Self
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
@@ -17,10 +18,10 @@ class Adaline:
     max_iter : int
         Maximum number of iterations (epochs) executed by the learning
         algorithm. Defaults to `1000`.
-    tol : float | None
+    tol : Optional[float]
         Allowed tolerance for the mean squared error. Setting to `None` has the
         same behaviour as having `0.0` tolerance. Defaults to `0.001`.
-    random_state : int | None
+    random_state : Optional[int]
         Random state used for initializing the weights of the model. Defaults to `None`.
 
     Attributes
@@ -40,9 +41,9 @@ class Adaline:
         self,
         learning_rate: float = 0.01,
         max_iter: int = 1000,
-        tol: (float | None) = 0.001,
-        random_state: (int | None) = None,
-    ):
+        tol: Optional[float] = 0.001,
+        random_state: Optional[int] = None,
+    ) -> None:
         assert (
             0.0 <= learning_rate <= 1.0
         ), f"The learning rate should be between 0.0 and 1.0, instead got {learning_rate}."
@@ -51,15 +52,18 @@ class Adaline:
         self.tol = tol
         self.random_state = random_state
         self.is_fit = False
+        self.n_features = None
+        self.epoch_mse = None
+        self.weights = None
 
-    def fit(self, X: ArrayLike, y: ArrayLike):
+    def fit(self, X: ArrayLike, y: ArrayLike) -> Self:
         """Fit training data to the model.
 
         Parameters
         ----------
-        X : ArrayLike, shape = (n_datapoints, n_features)
+        X : ArrayLike, with shape `(n_datapoints, n_features)`
             Datapoints used for training the model.
-        y : ArrayLike, shape = (n_datapoints,)
+        y : ArrayLike, with shape `(n_datapoints,)`
             True binary labels for `X`, which we assume are either `1` or `-1`.
 
         Returns
@@ -93,7 +97,7 @@ class Adaline:
             self.weights[0] += self.learning_rate * gradient[1]
 
             self.epoch_mse.append((error**2).sum() / n_datapoints)
-            if (self.tol is not None) and self.epoch_mse[-1] < self.tol:
+            if (self.tol is not None) and (self.epoch_mse[-1] < self.tol):
                 break
         return self
 
@@ -102,7 +106,7 @@ class Adaline:
 
         Parameters
         ----------
-        X : ArrayLike, shape = (n_datapoints, n_features)
+        X : ArrayLike, with shape `(n_datapoints, n_features)`
             Datapoints to be classified by the model. The number of features
             should be the same as the amount seen in the training stage.
 
@@ -115,18 +119,12 @@ class Adaline:
             point is classified as `-1`.
         """
         assert self.is_fit, "The model should be fitted to a training set before any predictions."
+        assert self.weights is not None
 
         X = np.asarray(X)
         assert (
             X.shape[1] == self.n_features
         ), f"Expected {self.n_features} features from X but got {X.shape[0]}"
 
-        return np.where(self._aggregate(X) >= 0.0, 1, -1)
-
-    def _aggregate(self, X: NDArray) -> NDArray:
-        """Linear aggregation function.
-
-        For each datapoint in `X`, computes the linear combination of the point
-        with the model weights and bias parameter.
-        """
-        return np.dot(X, self.weights[1:]) + self.weights[0]
+        aggregated = np.dot(X, self.weights[1:]) + self.weights[0]
+        return np.where(aggregated >= 0.0, 1, -1)

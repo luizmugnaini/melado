@@ -2,18 +2,23 @@
 # Author: Luiz G. Mugnaini A.
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
+from typing import Optional, Self
 
 
-# TODO: implement the pocket algorithm for the perceptron (can be found in "Learning from Data").
+# TODO:
+# * Implement the pocket algorithm for the perceptron (can be found in "Learning from Data").
+# * See page 97 (paragraph just above exercise 3.9) for a way to speed up the fitting of the
+#   perceptron using the linear regression as a hot start for the weights (instead of using
+#   a random vector).
 class Perceptron:
     """Perceptron model.
 
     Parameters
     ----------
-    random_state : int | None
-        Random state used for shuffling the datapoints for each epoch.
+    random_state : Optional[int]
+        Random state used for shuffling the datapoints for each epoch. Default is `None`
     max_iter : int
-        Maximum number of iterations of the learning procedure.
+        Maximum number of iterations of the learning procedure. Default is 1000.
 
     Attributes
     ----------
@@ -21,20 +26,21 @@ class Perceptron:
         Model weights after the training stage.
     """
 
-    def __init__(self, random_state: (int | None) = None, max_iter: int = 1000):
+    def __init__(self, random_state: Optional[int] = None, max_iter: int = 1000) -> None:
         self.random_state = random_state
         self.max_iter = max_iter
         self.is_fit = False
+        self.weights = None
 
-    def fit(self, X: ArrayLike, y: ArrayLike):
+    def fit(self, X: ArrayLike, y: ArrayLike) -> Self:
         """Fit training data to model.
 
         Parameters
         ----------
-        X : ArrayLike, shape = (n_datapoints, n_features)
+        X : ArrayLike, with shape `(n_datapoints, n_features)`
             Training set of datapoints.
-        y : ArrayLike, shape = (n_datapoints,)
-            True binary labeling of hte training datapoints `X`. We assume that
+        y : ArrayLike, with shape `(n_datapoints,)`
+            True binary labeling of the training datapoints `X`. We assume that
             the class labels are either `1` or `-1`.
 
         Returns
@@ -55,13 +61,13 @@ class Perceptron:
         if isinstance(self.random_state, int):
             np.random.seed(self.random_state)
 
-        epoch_indices = np.arange(n_datapoints)
+        epoch_idx = np.arange(n_datapoints)
         while True:
             if isinstance(self.random_state, int):
-                np.random.shuffle(epoch_indices)
+                np.random.shuffle(epoch_idx)
 
             n_misclassifications = 0
-            for idx in epoch_indices:
+            for idx in epoch_idx:
                 wrong_classification = y[idx] * np.dot(self.weights, X[idx]) <= 0
                 if wrong_classification:
                     self.weights += y[idx] * X[idx]
@@ -87,8 +93,12 @@ class Perceptron:
             Predicted labels for the given datapoints.
         """
         assert self.is_fit, "The model should be fitted before being used for predictions."
+        assert (
+            self.weights is not None
+        ), "In order to obtain a prediction, the weights must be computed previously."
+
         X = np.asarray(X)
-        padding = np.repeat(1.0, X.shape[0])
+        padding = np.repeat(1.0, len(X))
         X = np.column_stack((X, padding))
 
-        return np.array([1 if np.dot(self.weights.T, x) >= 0 else -1 for x in X])
+        return np.fromiter((1 if np.dot(self.weights.T, x) >= 0 else -1 for x in X), float, len(X))
