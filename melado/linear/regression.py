@@ -1,5 +1,6 @@
 """Module containing the linear regression model."""
 # Author: Luiz G. Mugnaini A.
+from typing import Optional, Self
 import numpy as np
 from numpy.typing import NDArray, ArrayLike
 
@@ -74,16 +75,19 @@ class LinearRegression:
         if weights are provided.
     """
 
-    def __init__(self, fit_intercept: bool = True):
+    def __init__(self, fit_intercept: bool = True) -> None:
         self.fit_intercept = fit_intercept
         self.is_fit = False
+        self.coef = None
+        self.inv_cov = None
+        self.n_features = None
 
     def fit(
         self,
         X: ArrayLike,
         y: ArrayLike,
-        W: (ArrayLike | None) = None,
-    ):
+        W: Optional[ArrayLike] = None,
+    ) -> Self:
         r"""Fit the model to the training set.
 
         We now explain how to fit the weighted linear regression model. Assume we get a sample
@@ -119,7 +123,7 @@ class LinearRegression:
         y : ArrayLike, with shape `(n_datapoints, n_target)`
             True target value of the datapoints `X`. Each value associated to a
             datapoint can be a scalar or an array with dimension `n_target`.
-        W : ArrayLike | None, with shape `(n_datapoints,)`
+        W : Optional[ArrayLike], with shape `(n_datapoints,)`
             Weights associated with each datapoint of `X`. When `W` is set to `None`, the algorithm
             performs the ordinary linear regression on `X` and `y`.
 
@@ -130,11 +134,6 @@ class LinearRegression:
         """
         X, y = self._pre_process(X, y, W)
         self.coef = self.inv_cov @ X.T @ y
-        print(
-            "X = {}, y = {}, inv_cov = {}, coef = {}".format(
-                X.shape, y.shape, self.inv_cov.shape, self.coef.shape
-            )
-        )
         self.is_fit = True
         return self
 
@@ -143,7 +142,7 @@ class LinearRegression:
 
         Parameters
         ----------
-        X : ArrayLike, shape = `(n_datapoints, n_features)`
+        X : ArrayLike, with shape `(n_datapoints, n_features)`
             Datapoints to be evaluated by the model.
 
         Returns
@@ -187,7 +186,7 @@ class LinearRegression:
         self,
         X: ArrayLike,
         y: ArrayLike,
-        W: (ArrayLike | None) = None,
+        W: Optional[ArrayLike] = None,
     ) -> tuple[NDArray, NDArray]:
         r"""Pre-processing of the dataset.
 

@@ -6,27 +6,39 @@ authors = ["Luiz Mugnaini <luizmugnaini@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<=3.11"
+python = ">=3.11,<3.13"
 numpy = ">=1.24"
-matplotlib = "^3.7.1"
-pandas = "^2.0.0"
-scipy = "^1.10.1"
-scikit-learn = "^1.2.2"
-tomli = "^2.0.1"
-sphinx = "^7.0.1"
-furo = "^2023.5.20"
-myst-parser = "^2.0.0"
-pytest = "^7.4.0"
+nptyping = "^2.5.0"
+
+[tool.poetry.dev-dependencies]
+# Formatting, linting and type-checking
 black = "^23.3.0"
-mypy = "^1.4.0"
 ruff = "^0.0.275"
-setuptools = "^68.0.0"
-wheel = "^0.40.0"
-twine = "^4.0.2"
-jupyterlab = "^4.0.2"
 pyre-check = "^0.9.18"
 pywatchman = "^1.4.1"
 typeshed-client = "^2.3.0"
+
+# Testing
+pytest = "^7.4.0"
+pandas = "^2.0.0"
+scipy = "^1.10.1"
+scikit-learn = "^1.2.2"
+matplotlib = "^3.7.1"
+
+# Documentation
+# I genuinely do not remember why tomli would be needed...
+# tomli = "^2.0.1"
+sphinx = "^7.0.1"
+furo = "^2023.5.20"
+myst-parser = "^2.0.0"
+
+# Publication
+setuptools = "^68.0.0"
+wheel = "^0.40.0"
+twine = "^4.0.2"
+
+# Notebooks
+jupyterlab = "^4.0.2"
 
 
 [build-system]
@@ -41,3 +53,12 @@ ignore = [
     "E501",  # line too long, handled by black
     "C901",  # too complex
 ]
+
+[tool.pyright]
+venv = ".venv"
+typeCheckingMode = "off"
+# Ruff will do that to us
+reportUnusedImport = false
+reportUnusedClass = false
+reportUnusedFunction = false
+reportUnusedVariable = false

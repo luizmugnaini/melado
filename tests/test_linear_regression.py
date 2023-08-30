@@ -27,7 +27,7 @@ mel_olr_train_prediction = mel_olr.predict(X_train)
 mel_olr_test_prediction = mel_olr.predict(X_test)
 
 
-def test_olr_coefficients():
+def test_olr_coefficients() -> None:
     sk_olr_coef = sk_olr.coef_
     match sk_olr_coef.ndim:
         case 1:
@@ -39,21 +39,21 @@ def test_olr_coefficients():
     np.testing.assert_almost_equal(mel_olr.coef, sk_olr_coef)
 
 
-def test_olr_train_predictions():
+def test_olr_train_predictions() -> None:
     np.testing.assert_almost_equal(mel_olr_train_prediction, sk_olr_train_prediction)
 
 
-def test_olr_test_predictions():
+def test_olr_test_predictions() -> None:
     np.testing.assert_almost_equal(mel_olr_test_prediction, sk_olr_test_prediction)
 
 
-def test_olr_train_r2_score():
+def test_olr_train_r2_score() -> None:
     mel_olr_train_r2 = metrics.r2_score(y_train, mel_olr_train_prediction)
     sk_olr_train_r2 = metrics.r2_score(y_train, sk_olr_train_prediction)
     np.testing.assert_almost_equal(mel_olr_train_r2, sk_olr_train_r2)
 
 
-def test_olr_test_r2_score():
+def test_olr_test_r2_score() -> None:
     mel_olr_test_r2 = metrics.r2_score(y_test, mel_olr_test_prediction)
     sk_olr_test_r2 = metrics.r2_score(y_test, sk_olr_test_prediction)
     np.testing.assert_almost_equal(mel_olr_test_r2, sk_olr_test_r2)
@@ -75,7 +75,7 @@ sk_wlr_train_prediction = sk_wlr.predict(X_train)
 sk_wlr_test_prediction = sk_wlr.predict(X_test)
 
 
-def test_wlr_coefficients():
+def test_wlr_coefficients() -> None:
     sk_wlr_coef = sk_wlr.coef_
     match sk_wlr_coef.ndim:
         case 1:
@@ -87,11 +87,11 @@ def test_wlr_coefficients():
     np.testing.assert_almost_equal(mel_wlr.coef, sk_wlr_coef)
 
 
-def test_wlr_train_predictions():
+def test_wlr_train_predictions() -> None:
     np.testing.assert_almost_equal(mel_wlr_train_prediction, sk_wlr_train_prediction)
 
 
-def test_wlr_test_predictions():
+def test_wlr_test_predictions() -> None:
     np.testing.assert_almost_equal(mel_wlr_test_prediction, sk_wlr_test_prediction)
 
 

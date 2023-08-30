@@ -26,7 +26,7 @@ X = X[range(len(y))]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=1)
 
 
-def test_perceptron_f1_score():
+def test_perceptron_f1_score() -> None:
     sklearn_perceptron = SkPerceptron()
     sklearn_perceptron.fit(X_train, y_train)
     sklearn_prediction = sklearn_perceptron.predict(X_test)
