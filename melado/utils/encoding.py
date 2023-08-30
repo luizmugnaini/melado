@@ -18,11 +18,15 @@ class OneHotEncoder:
         Total number of unique classes found in the input array `y`.
     classes : NDArray, with shape `(n_classes,)`
         Array containing the classes present in the input array `y`.
-    enc_classes : NDArray, with shape `(n_samples,)
+    encoded : NDArray, with shape `(n_samples,)
         Array containing the result of encoding `y` via the one-hot method.
+    map : dict
+        Dictionary containing the mapping of each class to its corresponding encoding.
     """
 
-    def __init__(self, y: ArrayLike) -> None:
+    __slots__ = ("classes", "n_classes", "encoded", "map")
+
+    def __init__(self, y: ArrayLike, dtype=np.float64) -> None:
         y = np.asarray(y)
         assert (
             y.ndim == 1
@@ -31,13 +35,8 @@ class OneHotEncoder:
         self.classes = np.unique(y)
         self.n_classes = len(self.classes)
 
-        self.enc_classes = np.zeros(shape=(len(y), self.n_classes))
-        if y.dtype.type is np.string_:
-            for idx, cl in enumerate(y):
-                for pos, val in enumerate(self.classes):
-                    if cl == val:
-                        self.enc_classes[idx, pos] = 1.0
-                        break
-        else:
-            for idx, cl in enumerate(y):
-                self.enc_classes[idx, cl] = 1.0
+        mat = np.eye(self.n_classes, dtype=dtype)
+        self.encoded = np.zeros(shape=(len(y), self.n_classes))
+        self.map = dict(((self.classes[i], mat[i]) for i in range(self.n_classes)))
+        for idx, cl in enumerate(y):
+            self.encoded[idx] = self.map[cl]
