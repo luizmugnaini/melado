@@ -3,7 +3,7 @@
 from ..utils import OneHotEncoder
 import numpy as np
 from typing import Optional, Self
-from numpy.typing import ArrayLike, NDArray
+from numpy.typing import NDArray
 import logging
 import sys
 
@@ -33,6 +33,19 @@ class LogisticRegression:
         Random state used for weight initialization.
     batch_size : int (defaults to `200`)
         The number of samples to be used per batch.
+
+    Attributes
+    ----------
+    is_fit : bool
+        Whether the model passed through the training stage.
+    n_classes : int
+        Number of classes seen in the training stage. Will only be created after training.
+    n_features : int
+        Number of features seen in the training stage. Will only be created after training.
+    weights : NDArray
+        Model weights computed in training stage. Will only be created after training.
+    epoch_cost : list[float]
+        Model cost function value after each epoch of training. Will only be created after training.
     """
 
     __slots__ = (
@@ -68,40 +81,46 @@ class LogisticRegression:
         self.random_state = random_state
         self.batch_size = batch_size
         self.shuffle = shuffle
-
         self.is_fit = False
-        self.n_classes: Optional[int] = None
-        self.classes: Optional[NDArray] = None
-        self.n_features: Optional[int] = None
-        self.weights: Optional[NDArray] = None
-        self.epoch_cost: Optional[list] = None
 
     @staticmethod
     def _softmax(net_input: NDArray) -> NDArray:
+        """Soft-max function."""
         if net_input.ndim > 1:
             return (np.exp(net_input.T) / np.sum(np.exp(net_input), axis=1)).T
         else:
             return (np.exp(net_input.T) / np.sum(np.exp(net_input))).T
 
     def _forward(self, X: NDArray) -> NDArray:
+        """Performs a forward-pass in the training stage."""
+        assert self.weights is not None
         net_input = (
-            X.dot(self.weights[1:]) + self.weights[0]  # pyre-ignore[16]
-            if self.fit_intercept
-            else X.dot(self.weights)  # pyre-ignore[6]
+            X.dot(self.weights[1:]) + self.weights[0] if self.fit_intercept else X.dot(self.weights)
         )
         return LogisticRegression._softmax(net_input)
 
     def _cost(self, actual: NDArray, expected: NDArray) -> float:
-        l2 = self.l2 * np.sum(self.weights**2)  # pyre-ignore[58]
+        """Computes the cost value associated to the current prediction."""
+        assert self.weights is not None
+        l2 = self.l2 * np.sum(self.weights**2)
         cross_entropy = -np.sum(np.log(actual) * expected, axis=1) + l2
-        return 0.5 * np.mean(cross_entropy)  # pyre-ignore[58]
+        return 0.5 * np.mean(cross_entropy)
 
-    def fit(self, X: ArrayLike, y: ArrayLike, hot_start: bool = False) -> Self:
-        """Fit training data to the model."""
-        if (not self.is_fit) and hot_start:
-            logger.warning("Ignoring hot start argument, the model isn't fitted yet.")
+    def fit(self, X: NDArray, y: NDArray) -> Self:
+        """Fit training data to the model.
 
-        X, y = np.asarray(X), np.asarray(y)
+        Parameters
+        ----------
+        X : NDArray, with shape `(n_samples, n_features)`
+            Training set.
+        y : NDArray, with shape `(n_samples, n_classes)`
+            True classes associated with the training set `X`.
+
+        Returns
+        -------
+        self : LogisticRegression
+            The logistic regression model trained with respect to `X` and `y`.
+        """
         n_datapoints, self.n_features = X.shape
         assert n_datapoints == len(y), f"Lengths of X ({n_datapoints}) and y ({len(y)}) don't match."
         assert y.ndim == 1, f"Expected y to have dimension 1, instead got {y.ndim}."
@@ -118,7 +137,7 @@ class LogisticRegression:
             loc=0.0,
             scale=0.1,
             size=(
-                self.n_features + 1 if self.fit_intercept else self.n_features,  # pyre-ignore[58]
+                self.n_features + 1 if self.fit_intercept else self.n_features,
                 self.n_classes,
             ),
         )
@@ -139,22 +158,20 @@ class LogisticRegression:
                 # Gradient descent
                 out_diff = y_true - y_prob
                 grad_weights = X_batch.T.dot(out_diff)
-                reg_coeff = self.l2 * self.weights[1:]  # pyre-ignore[16]
+                reg_coeff = self.l2 * self.weights[1:]
                 if self.fit_intercept:
-                    # pyre-ignore[16]
                     self.weights[0] += self.learning_rate * np.sum(out_diff, axis=0)
                     self.weights[1:] += self.learning_rate * (grad_weights - reg_coeff)
                 else:
-                    # pyre-ignore[16]
                     self.weights += self.learning_rate * (grad_weights - reg_coeff)
 
             y_prob_epoch = self._forward(X)
-            # pyre-ignore[16]
             self.epoch_cost.append(self._cost(actual=y_prob_epoch, expected=y_enc))
 
         return self
 
     def predict_prob(self, X: NDArray) -> NDArray:
+        """Predict the probabilities of `X` pertaining to each class seen in training stage."""
         if X.ndim > 1:
             assert (
                 X.shape[1] == self.n_features
@@ -162,7 +179,7 @@ class LogisticRegression:
         return self._forward(X)
 
     def predict(self, X: NDArray) -> NDArray:
+        """Predict the class of `X`."""
+        assert self.classes is not None
         prob = self.predict_prob(X)
-        return np.array(
-            [self.classes[max_idx] for max_idx in prob.argmax(axis=1)]  # pyre-ignore[16]
-        )
+        return np.array([self.classes[max_idx] for max_idx in prob.argmax(axis=1)])
