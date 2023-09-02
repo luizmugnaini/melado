@@ -67,20 +67,18 @@ class LinearRegression:
     Attributes
     ----------
     coef : NDArray
-        Coefficients (weights) of the model after training.
+        Coefficients (weights) of the model after training. Will only be created after training.
     n_features : int
-        Number of features seen in the training stage.
+        Number of features seen in the training stage. Will only be created after training.
     inv_cov : NDArray | None
         Inverse of the covariance matrix associated to the training datapoints. This is only computed
-        if weights are provided.
+        if weights are provided. Will only be created after training
     """
+    __slots__ = ("fit_intercept", "is_fit", "coef", "inv_cov", "n_features")
 
     def __init__(self, fit_intercept: bool = True) -> None:
         self.fit_intercept = fit_intercept
         self.is_fit = False
-        self.coef = None
-        self.inv_cov = None
-        self.n_features = None
 
     def fit(
         self,

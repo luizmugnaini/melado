@@ -64,14 +64,14 @@ paru -Syu python-poetry watchman
 ```
 
 Go to the `melado` directory and run the `start` script, which will install the virtual
-environment using Poetry and then set a watchman project root for `melado`:
+environment using Poetry:
 
 ```shell
 ./start
 ```
 
 The available `Makefile` can be used to either run the tests, run the
-[Ruff](https://beta.ruff.rs/docs/) linter, run the [Pyre](https://pyre-check.org/)
+[Ruff](https://beta.ruff.rs/docs/) linter, run the [mypy](https://mypy-lang.org/)
 typechecker, and build the docs with [Sphinx](https://www.sphinx-doc.org/):
 
 ```shell

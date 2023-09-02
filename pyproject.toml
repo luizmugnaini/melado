@@ -10,13 +10,11 @@ python = ">=3.11,<3.13"
 numpy = ">=1.24"
 nptyping = "^2.5.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 # Formatting, linting and type-checking
+mypy = "^1.5.1"
 black = "^23.3.0"
 ruff = "^0.0.275"
-pyre-check = "^0.9.18"
-pywatchman = "^1.4.1"
-typeshed-client = "^2.3.0"
 
 # Testing
 pytest = "^7.4.0"
@@ -40,7 +38,6 @@ twine = "^4.0.2"
 # Notebooks
 jupyterlab = "^4.0.2"
 
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
@@ -56,8 +53,7 @@ ignore = [
 
 [tool.pyright]
 venv = ".venv"
-typeCheckingMode = "off"
-# Ruff will do that to us
+ignore = ["tests"]
 reportUnusedImport = false
 reportUnusedClass = false
 reportUnusedFunction = false

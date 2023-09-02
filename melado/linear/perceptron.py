@@ -15,22 +15,23 @@ class Perceptron:
 
     Parameters
     ----------
-    random_state : Optional[int]
-        Random state used for shuffling the datapoints for each epoch. Default is `None`
     max_iter : int
         Maximum number of iterations of the learning procedure. Default is 1000.
+    random_state : Optional[int]
+        Random state used for shuffling the datapoints for each epoch. Default is `None`
 
     Attributes
     ----------
     weights : NDArray
-        Model weights after the training stage.
+        Model weights. Will only be created after the training stage.
     """
 
-    def __init__(self, random_state: Optional[int] = None, max_iter: int = 1000) -> None:
-        self.random_state = random_state
+    __slots__ = ("random_state", "max_iter", "is_fit", "weights")
+
+    def __init__(self, max_iter: int = 1000, random_state: Optional[int] = None) -> None:
         self.max_iter = max_iter
+        self.random_state = random_state
         self.is_fit = False
-        self.weights = None
 
     def fit(self, X: ArrayLike, y: ArrayLike) -> Self:
         """Fit training data to model.
