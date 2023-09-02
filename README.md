@@ -56,11 +56,10 @@ labels = lin_reg.predict(new_data, data_weights)
 Development
 </h2>
 
-After cloning the repository, install [Poetry](https://python-poetry.org/) and
-[Watchman](https://facebook.github.io/watchman/) with your favorite package manager
+After cloning the repository, install [Poetry](https://python-poetry.org/) with your favorite package manager
 
 ```shell
-paru -Syu python-poetry watchman
+paru -Syu python-poetry
 ```
 
 Go to the `melado` directory and run the `start` script, which will install the virtual
@@ -75,7 +74,7 @@ The available `Makefile` can be used to either run the tests, run the
 typechecker, and build the docs with [Sphinx](https://www.sphinx-doc.org/):
 
 ```shell
-make {tests,lint,typecheck,docs}
+make {tests,lint,docs}
 ```
 
 ## Contributing

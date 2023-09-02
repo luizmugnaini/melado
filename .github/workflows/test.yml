@@ -26,6 +26,3 @@ jobs:
       - name: Test with pytest
         run: |
           make tests
-      - name: Typecheck with pyre-check
-        run: |
-          make typecheck
